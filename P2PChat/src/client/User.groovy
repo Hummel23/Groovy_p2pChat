@@ -12,7 +12,7 @@ class User {
 		try {
 			def hostAddr = InetAddress.getLocalHost().getHostAddress()
 			def hostName = InetAddress.localHost.hostName
-		
+			return hostAddr
 		}
 		catch (UnknownHostException e) {
 			println "Host not found: " + e.getMessage()
