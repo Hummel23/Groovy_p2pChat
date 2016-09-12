@@ -9,4 +9,10 @@ class Receiver implements IReceiver {
 		this.name = name
 	}
 	
+	@Override
+	public void receive() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

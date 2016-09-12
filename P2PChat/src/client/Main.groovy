@@ -10,7 +10,7 @@ class Main {
 
 		//call to server
 		TransportService transportService = new TransportService()
-		transportService.connectToUserServer("141.45.206.251:8080")
+		transportService.connectToUserServer("141.45.206.251")
 
 		ClientServer cl = new ClientServer()
 		cl.startClientServer()
