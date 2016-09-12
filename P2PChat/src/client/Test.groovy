@@ -1,5 +1,5 @@
 package client
 
-class Test {
+class Test  {
 
 }
