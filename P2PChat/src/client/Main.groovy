@@ -7,10 +7,7 @@ class Main {
 	static main(args) {
 		
 		//call to server
-		RESTClient client = new RESTClient('http://141.45.211.14:8080/')
-		def response = client.get(path: '/resource')
-		assert response.status == 200
-		assert response.data == 'Hello Server'
+		connectToUserServer("141.45.206:8080")
 		
 		//read input from console
 		def br = new BufferedReader(new InputStreamReader(System.in))
