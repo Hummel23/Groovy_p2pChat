@@ -1,15 +1,16 @@
 package client.services
 
 import client.Message
+import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.RESTClient
 
 import javax.ws.rs.PathParam
 
 
 
-boolean connectToUserServer(@PathParam ("inetAddr")def inetAddr) {
+boolean connectToUserServer(def inetAddr) {
 	
-	RESTClient client = new RESTClient('http://${inetAddr}:8080/')
+	RESTClient client = new RESTClient("http://${inetAddr}:8080")
 	def response = client.get(path: '/resource')
 	println response.data
 	assert response.status == 200
@@ -19,7 +20,7 @@ boolean connectToUserServer(@PathParam ("inetAddr")def inetAddr) {
 
 void sendMessage(Message msg) {
 	
-	def http = new HTTPBuilder( 'http://${msg.receiver.}' )
+	def http = new HTTPBuilder( 'http://${msg.receiver.inetAddr}' )
 	def postBody = [name: 'bob', title: 'construction worker'] // will be url-encoded
 	
 	http.post( path: '/', body: postBody,

@@ -10,7 +10,7 @@ class Main {
 
 		//call to server
 		TransportService transportService = new TransportService()
-		transportService.connectToUserServer("141.45.206.251:8080")
+//		transportService.connectToUserServer("141.45.206.251")
 
 		ClientServer cl = new ClientServer()
 		cl.startClientServer()
@@ -29,11 +29,12 @@ class Main {
 		//create receiver from input & onlineUserList
 		Receiver rec = new Receiver("saba")
 		
-		prinltn "Please enter your message: "
+		println "Please enter your message: "
 		def textMessage = br.readLine()
 		TextMessage msg = new TextMessage(textMessage, sender, rec)
+		println msg
 		
-		transportService.sendMessage(msg)
+//		transportService.sendMessage(msg)
 		
 	}
 
