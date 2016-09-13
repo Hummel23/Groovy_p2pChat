@@ -25,16 +25,16 @@ class Main {
 				//find own IP and create sender-obj
 				//println "Please choose friend: "
 				//create receiver from input & onlineUserList
-				
-				println "Enter name of chat partner: "
-				def chatPartnerName = br.readLine()
-				def chatPartnerIP = "141.45.211.14"
-				println "Please enter your message: "
-				
-				def content = br.readLine()
-				// on ENTER send message
-				def msg = new TextMessage(content, messenger.sender, chatPartnerName)
-				messenger.sender.sendMessage(msg)
+//				
+//				println "Enter name of chat partner: "
+//				def chatPartnerName = br.readLine()
+//				def chatPartnerIP = "141.45.206.251"
+//				println "Please enter your message: "
+//				
+//				def content = br.readLine()
+//				// on ENTER send message
+//				def msg = new TextMessage(content, messenger.sender, chatPartnerName)
+//				messenger.sender.sendMessage(msg)
 				
 						
 			}
