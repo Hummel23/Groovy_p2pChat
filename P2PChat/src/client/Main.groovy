@@ -19,7 +19,7 @@ class Main {
 				//get onlineUserList
 				def inetAddr = "141.45.211.14"
 				//create sender & receiver & start local server
-				def messenger = new Messenger(name: userName, inetAddr:inetAddr)	
+				def messenger = new Messenger(userName, inetAddr)	
 				println "Welcome to MESSAS $userName!"
 				
 				//find own IP and create sender-obj
