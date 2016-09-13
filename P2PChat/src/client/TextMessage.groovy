@@ -3,12 +3,12 @@ package client
 import groovy.transform.ToString
 
 @ToString(includeNames=true)
-class TextMessage extends Message{
+class TextMessage extends Message {
 	
-	public TextMessage(String content, Sender sender, Receiver rec) {
+	public TextMessage(String content, def sender, def chatPartnerID) {
 		this.content = content
 		this.sender = sender
-		this.receiver = rec
+		this.chatPartnerID = chatPartnerID
 	}
 	
 }

@@ -2,40 +2,42 @@ package client
 
 import client.services.TransportService;
 import groovyx.net.http.RESTClient
-import server.ClientServer
 
 class Main {
 
 	static main(args) {
-
-		//call to server
-		TransportService transportService = new TransportService()
-//		transportService.connectToUserServer("141.45.206.251")
-
-		ClientServer cl = new ClientServer()
-		cl.startClientServer()
-		println "startet local server..."
-			
-		//read input from console
-		def br = new BufferedReader(new InputStreamReader(System.in))
 		
-		println "Please enter your username: "
-		def userName = br.readLine()
-		println "Welcome to MESSAS $userName!"
-		//get onlineUserList
-		//find own IP and create sender-obj
-		Sender sender = new Sender(userName) //Singleton
-		//println "Please choose friend: "
-		//create receiver from input & onlineUserList
-		Receiver rec = new Receiver("saba")
-		
-		println "Please enter your message: "
-		def textMessage = br.readLine()
-		TextMessage msg = new TextMessage(textMessage, sender, rec)
-		println msg
-		
-//		transportService.sendMessage(msg)
-		
-	}
-
+				//call to server
+//				TransportService transportService = new TransportService()
+		//		transportService.connectToUserServer("141.45.206.251")
+						
+				//read input from console
+				def br = new BufferedReader(new InputStreamReader(System.in))
+				
+				println "Please enter your username: "
+				def userName = br.readLine()
+				//login at server
+				//get onlineUserList
+				def inetAddr = "141.45.206.251"
+				//create sender & receiver & start local server
+				def messenger = new Messenger(name: userName, inetAddr:inetAddr)	
+				println "Welcome to MESSAS $userName!"
+				
+				//find own IP and create sender-obj
+				//println "Please choose friend: "
+				//create receiver from input & onlineUserList
+				
+				println "Enter name of chat partner: "
+				def chatPartnerName = br.readLine()
+				def chatPartnerIP = "141.45.211.14"
+				println "Please enter your message: "
+				
+				def content = br.readLine()
+				// on ENTER send message
+				def msg = new TextMessage(content, messenger.sender, chatPartnerName)
+				messenger.sender.sendMessage(msg)
+				
+						
+			}
+	
 }
