@@ -1,11 +1,13 @@
 package client
 
-@Singleton
 class Messenger {
+
+	Sender sender
+	Receiver receiver
 	
-	def name
-	def inetAddr
-	Sender sender = new Sender(name)
-	Receiver rec = new Receiver (name, inetAddr)
+	public Messenger(String name, String inetAddr){
+		this.sender = new Sender(name)
+		this.receiver = new Receiver (name, inetAddr)
+	}
 
 }

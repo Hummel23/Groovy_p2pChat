@@ -1,6 +1,6 @@
 package client
 
-import org.glassfish.grizzly.http.server.HttpServer
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory
 import org.glassfish.jersey.server.ResourceConfig
 
 /**
@@ -23,6 +23,7 @@ class Receiver {
 	}
 
 	def startClientServer() {
+		println "this.inetAddr = " + this.inetAddr
 		this.server = GrizzlyHttpServerFactory.createHttpServer(
 			"http://${this.inetAddr}:8080".toURI(),
 			new ResourceConfig(Chat.class));

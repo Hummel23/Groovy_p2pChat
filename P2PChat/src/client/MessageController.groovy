@@ -7,6 +7,15 @@ import javax.ws.rs.PathParam
 /**
  * 
  */
+@Path('/')
+class Root {
+	
+	@GET
+	public String startServer() {
+		return "(0)client server up..."
+	}
+}
+
 @Path('/{message}')
 class Chat {
 	
