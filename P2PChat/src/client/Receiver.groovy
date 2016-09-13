@@ -1,22 +1,21 @@
 package client
 
+import org.glassfish.grizzly.http.server.HttpServer
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory
 import org.glassfish.jersey.server.ResourceConfig
 
 /**
  * acts as client-side server
  */
+@Singleton
 class Receiver {
 
 	def name
 	def inetAddr 
-	def server
+	HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
+			"http://${this.inetAddr}:8080".toURI(),
+			new ResourceConfig(Chat.class, Root.class))
 
-	public Receiver(String name, String inetAddr) {
-		this.name = name
-		this.inetAddr = inetAddr
-		startClientServer()
-	}
 
 	public void receiveMessage(Message msg) {
 		
@@ -24,9 +23,9 @@ class Receiver {
 
 	def startClientServer() {
 		println "this.inetAddr = " + this.inetAddr
-		this.server = GrizzlyHttpServerFactory.createHttpServer(
-			"http://${this.inetAddr}:8080".toURI(),
-			new ResourceConfig(Chat.class));
+//		this.server = GrizzlyHttpServerFactory.createHttpServer(
+//			"http://${this.inetAddr}:8080".toURI(),
+//			new ResourceConfig(Chat.class, Root.class))
 		println "startet local server..."
 	}
 	
@@ -35,3 +34,5 @@ class Receiver {
 	}
 
 }
+
+

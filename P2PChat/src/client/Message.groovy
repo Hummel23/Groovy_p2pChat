@@ -5,7 +5,7 @@ import groovy.transform.ToString
 @ToString(includeNames=true)
 abstract class Message {
 	
-	def content, sender, chatPartner
+	def content, sender, chatPartnerID
 	def date = new Date()
 		
 }

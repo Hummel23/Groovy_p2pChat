@@ -2,21 +2,20 @@ package client
 
 import groovyx.net.http.RESTClient
 
+
+@Singleton
 class Sender {
 
 	def name
 
-	public Sender(String name) {
-		this.name = name
-	}
-	
+
 	public void sendMessage(Message msg) {
-		def ip = getChatPartnerIP(msg.chatPartner)
-		RESTClient client = new RESTClient('http://${ip}:8080/')
+		def ip = getChatPartnerIP(msg.chatPartnerID)
+		RESTClient client = new RESTClient("http://${ip}:8080/")
 		def response = client.get(path: "/${msg.content}")
 		assert response.status == 200
 //		assert response.data == 'Hello Server'
-		println response.data
+//		println response.data.toString()
 		
 		
 //		def http = new HTTPBuilder( "http://${msg.receiver.inetAddr}:8080" )
@@ -30,6 +29,6 @@ class Sender {
 	}
 	
 	public String getChatPartnerIP(String id){
-		return "141.45.211.14"
+		return "141.45.206.251"
 	}
 }

@@ -11,4 +11,5 @@ class TextMessage extends Message {
 		this.chatPartnerID = chatPartnerID
 	}
 	
+	
 }

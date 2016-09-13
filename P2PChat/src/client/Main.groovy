@@ -5,38 +5,56 @@ import groovyx.net.http.RESTClient
 
 class Main {
 
+
 	static main(args) {
-				//call to server
-//				TransportService transportService = new TransportService()
+		//call to server
+		//				TransportService transportService = new TransportService()
 		//		transportService.connectToUserServer("141.45.206.251")
-						
-				//read input from console
-				def br = new BufferedReader(new InputStreamReader(System.in))
-				
-				println "Please enter your username: "
-				def userName = br.readLine()
-				//login at server
-				//get onlineUserList
-				def inetAddr = "141.45.211.14"
-				//create sender & receiver & start local server
-				def messenger = new Messenger(userName, inetAddr)	
-				println "Welcome to MESSAS $userName!"
-				
-				//find own IP and create sender-obj
-				//println "Please choose friend: "
-				//create receiver from input & onlineUserList
-//				
-//				println "Enter name of chat partner: "
-//				def chatPartnerName = br.readLine()
-//				def chatPartnerIP = "141.45.206.251"
-//				println "Please enter your message: "
-//				
-//				def content = br.readLine()
-//				// on ENTER send message
-//				def msg = new TextMessage(content, messenger.sender, chatPartnerName)
-//				messenger.sender.sendMessage(msg)
-				
-						
+
+		//read input from console
+		//				def br = new BufferedReader(new InputStreamReader(System.in))
+		//
+		//				println "Please enter your username: "
+		//				def userName = br.readLine()
+
+
+		//create sender & receiver & start local server
+		def messenger = Messenger.instance
+		messenger.greeting()
+
+		def br = new BufferedReader(new InputStreamReader(System.in))
+		boolean isLoggedIn = false
+
+		while(isLoggedIn==false){
+			def command = br.readLine()
+			if(command == "login"){
+				messenger.login()
+				isLoggedIn=true
 			}
-	
+			else {
+				println messenger.name+ ",please enter <login>, if you want to log in. "
+			}
+		}
+
+		boolean commandIsCorrect=false
+		
+		while(messenger.isOnline){
+			while(!commandIsCorrect){
+				println "command:" + commandIsCorrect
+				def command = br.readLine().trim().toLowerCase()
+				println "command = " + command
+				println "command valid:" + (command == 'help')
+				if(messenger.isValidEntry(command)){
+					
+					messenger.executeUserEntry(command)
+					commandIsCorrect=true
+				}else{
+					println "The command you entered is incorrect. Please try again."
+					println messenger.commands
+				}
+			}
+		}
+
+	}
 }
+
