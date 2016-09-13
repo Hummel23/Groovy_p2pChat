@@ -6,6 +6,7 @@ class Main {
 	
 	static main(args) {
 		
+		boolean isLoggedIn = false;
 		def zahl = 1
 //		List list = new ArrayList<String>()
 //		list.add("Silvia")
@@ -14,17 +15,28 @@ class Main {
 		
 		
 		//call to server
-		RESTClient client = new RESTClient('http://141.45.211.14:8080/')
+		RESTClient client = new RESTClient('http://192.168.56.1:8080/')
 		def response = client.get(path: '/resource')
 		assert response.status == 200
 		assert response.data == 'Hello Server'
 		
 		//read input from console
 		def br = new BufferedReader(new InputStreamReader(System.in))
-		println "Welcome to MESSAS-Chat! \nPlease enter your nickname: "
-		def userName = br.readLine()
-		println "Please enter your password: "
-		def userPwd = br.readLine()     //todo: hide password
+		println "Welcome to MESSAS-Chat!"
+		def userName = ""
+		
+		
+		
+		final String keyOfMap = "username"
+		
+			println "Please enter your nickname: "
+			userName = br.readLine()
+			//mapOfUser.put(keyOfMap, userName)
+			//isLoggedIn = client.put(mapOfUser)
+			println "The nickname " + userName + " is already in use."
+		
+		//println "Please enter your password: "
+		//def userPwd = br.readLine()     //todo: hide password
 		println "Hello " + userName + "! You are now in your personally chatroom. "
 		
 		
