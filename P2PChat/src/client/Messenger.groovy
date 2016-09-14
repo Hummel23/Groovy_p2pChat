@@ -8,11 +8,17 @@ class Messenger {
 	Sender sender
 	Receiver receiver 
 	def name
-	def commands = """List of possible Commands:
-				  list : show a list of all online users
-				  chat : write a message
-				  exit : exit chat program
-				  help : show commands"""
+	def commands = """
+			**********************************************
+				List of possible Commands:
+				--------------------------
+				list : show a list of all online users
+				chat : write a message
+				exit : exit chat program
+				help : show commands
+
+			**********************************************"""
+
 	boolean isOnline = false
 
 
