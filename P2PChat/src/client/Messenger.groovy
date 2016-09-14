@@ -2,47 +2,30 @@ package client
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import groovyx.net.http.RESTClient
 
 @Singleton
 class Messenger {
 
 	Sender sender
-//	 = sender.instance
 	Receiver receiver
-//	 = receiver.instance
 	boolean isWriting = false
 	def name
 	def commands = """
-			**********************************************
-				List of possible Commands:
-				--------------------------
-				list : show a list of all online users
-				chat : write a message
-				exit : exit chat program
-				help : show commands
+**********************************************
+	List of possible Commands:
+	--------------------------
+	list : show a list of all online users
+	chat : write a message
+	exit : exit chat program
+	help : show commands
 
-			**********************************************
-		Please choose a command: 
-		"""
+**********************************************"""
 
 	boolean isOnline = false
 
-
 	public void greeting(){
 		println "Welcome to MESSAS! Please type your name if you want to log in."
-		
-//		println "Please enter your username: "
-//		this.name = br.readLine()
-		//TODO: validateName()
-		//		final String keyOfMap = "username"
-		//
-		//			println "Please enter your nickname: "
-		//			userName = br.readLine()
-		//			//mapOfUser.put(keyOfMap, userName)
-		//			//isLoggedIn = client.put(mapOfUser)
-		//			println "The nickname " + userName + " is already in use."
-		
-
 	}
 
 	public void login(){
@@ -75,7 +58,6 @@ class Messenger {
 		//TODO wait for command or incoming message
 	}
 	
-
 	public void chat(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		println "Enter name of chat partner: "
@@ -92,14 +74,21 @@ class Messenger {
 		println "Please type a new command before continuing."
 	}
 	
-
+	public def getOnlineUsers() {
+		RESTClient client = new RESTClient("http://${InetAddr.UserServerInetAddr}:8080")
+		def response = client.get(path: '/list')
+		return response.data
+	}
 	
-	public void getOnlineUsers() {
-		def responseListOfUser = sender.client.get(path: '/list')
-//		List<User> listOfUser = responseListOfUser.data;
-//		for (user in listOfUser) {
-//			System.out.println(user.name + " " + user.ip)
-//		}
+	public String showUserList(def onlineUsers) {
+		def list = ""
+		
+		for(user in onlineUsers) {
+			if(user.name != sender.instance.name){
+				list += "      " + user.name + "\n      -----------------\n"
+			}
+		}
+		return list
 	}
 
 
@@ -112,7 +101,17 @@ class Messenger {
 			chat()
 		}
 		else if(val == 'list'){
-			//			getOnlineUsers()
+			def list = getOnlineUsers()
+			println "list is: " + list
+			if(list.size() > 0) {
+			println "++++++++++++++++++++++++++++++++++++++++++++++++"
+			println"      Want to chat? These users are online:"
+			println "     ====================================="
+			println showUserList(list)
+			println "++++++++++++++++++++++++++++++++++++++++++++++++"
+			} else {
+				 println "Sorry - nobody online"
+			}
 		}
 		else if(val == 'help'){
 			println commands
@@ -125,7 +124,5 @@ class Messenger {
 		isOnline=false
 		println "Thanks for using MESSAS. We are looking forward to seeing you again soon!"
 	}
-
-
 
 }

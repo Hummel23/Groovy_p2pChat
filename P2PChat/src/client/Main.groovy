@@ -1,16 +1,11 @@
 package client
 
-import client.services.TransportService;
-import groovyx.net.http.RESTClient
-
-import javax.ws.rs.core.GenericType
-import javax.ws.rs.core.MediaType
-import javax.ws.rs.core.Response;
-
+import client.services.ValidationService
 
 static main(args) {
 
 	def messenger = Messenger.instance
+	def validationService = ValidationService.instance
 	messenger.greeting()
 
 	def br = new BufferedReader(new InputStreamReader(System.in))
@@ -26,8 +21,7 @@ static main(args) {
 		boolean commandIsCorrect=false
 		
 		while(!commandIsCorrect){
-			if(messenger.isValidEntry(command)){
-
+			if(validationService.isValidEntry(command)){
 				messenger.executeUserEntry(command)
 				commandIsCorrect=true
 			}else{
