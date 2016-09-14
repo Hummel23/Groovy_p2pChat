@@ -29,7 +29,7 @@ class Sender {
 //		}		
 	}
 	
-	public String getChatPartnerIP(String id){
-		return "141.45.206.251"
-	}
+//	public String getChatPartnerIP(String id){
+//		return "141.45.206.251"
+//	}
 }

@@ -1,7 +1,14 @@
 package client.services
 
+import groovyx.net.http.RESTClient
+import client.InetAddr
+
+
 @Singleton
 class UserService {
+	
+	RESTClient client = new RESTClient("http://${InetAddr.UserServerInetAddr}:8080")
+	
 	
 	
 	//asks the user to enter the name of the Chatpartner and checks that the name entered is 
@@ -33,15 +40,16 @@ class UserService {
 		return true
 	}
 	
-	public String addUserToServer() {
-		def responseLogin = sender.instance.client.get(path: '/login', query:[
-			'name': this.name]);
-
+	public String addUserToServer(String name) {
+//		println "addUserMethode"
+		def responseLogin = client.get(path:'/login', query:['name':name])
+		println responseLogin.data
 		return responseLogin.data
 	}
 	
+	//TODO logout from userServer by removing user from list
 	public void removeUserFromServer(){
-		
+		client.get(path: '/logout')
 	}
 
 }
