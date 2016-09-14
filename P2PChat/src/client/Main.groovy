@@ -25,15 +25,10 @@ static main(args) {
 	messenger.greeting()
 
 	def br = new BufferedReader(new InputStreamReader(System.in))
-
+	
 	while(!messenger.isOnline){
-		def command = br.readLine()
-		if(command == "login"){
-			messenger.login()
-		}
-		else {
-			println messenger.name+ ",please enter <login>, if you want to chat. "
-		}
+		messenger.name = br.readLine()
+		messenger.login()
 	}
 
 

@@ -20,16 +20,18 @@ class Messenger {
 				exit : exit chat program
 				help : show commands
 
-			**********************************************"""
+			**********************************************
+		Please choose a command: 
+		"""
 
 	boolean isOnline = false
 
 
 	public void greeting(){
-		def br = new BufferedReader(new InputStreamReader(System.in))
+		println "Welcome to MESSAS! Please type your name if you want to log in."
 		
-		println "Please enter your username: "
-		this.name = br.readLine()
+//		println "Please enter your username: "
+//		this.name = br.readLine()
 		//TODO: validateName()
 		//		final String keyOfMap = "username"
 		//
@@ -39,12 +41,22 @@ class Messenger {
 		//			//isLoggedIn = client.put(mapOfUser)
 		//			println "The nickname " + userName + " is already in use."
 		
-		println "Welcome to MESSAS ${this.name} Please type <login>, if you want to login. "
 
 	}
 
 	public void login(){
-
+		def br = new BufferedReader(new InputStreamReader(System.in))
+		
+//		TODO boolean userAdded = false
+//		(while(!userAdded){
+//		if(addUser == null){
+//		prinln "This name is already in use. Please choose another name."
+//		messenger.name = br.readLine()
+//		addUser()
+//		userAdded = true
+//		}
+//	}
+//		
 		def inetAddr = InetAddr.InetAddr	
 //		def inetAddr = addUserToServer()	//TODO: change to this!!!!
 		//TODO get onlineUserList
