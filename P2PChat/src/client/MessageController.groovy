@@ -22,20 +22,8 @@ class Chat {
 	@GET
 	public void getTextMessage(
 		@PathParam("message") String message) {
-//		
-//		while(messenger.instance.isWriting){
-//			
-//		}
+
 	}
 }
 
 
-//@Path('/{}')
-//class Chat {
-//	@GET
-//	@Produces([MediaType.APPLICATION_JSON])
-//	def resource() {
-//		new JsonBuilder("Hello from other Client")
-//				.toPrettyString()
-//	}
-//}

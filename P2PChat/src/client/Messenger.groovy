@@ -53,7 +53,8 @@ class Messenger {
 //		if(addUser == null){
 //		prinln "This name is already in use. Please choose another name."
 //		messenger.name = br.readLine()
-//		addUser()
+//		addUser()	
+//		}else{
 //		userAdded = true
 //		}
 //	}
@@ -74,12 +75,6 @@ class Messenger {
 		//TODO wait for command or incoming message
 	}
 	
-	public String addUserToServer() {
-		def responseLogin = sender.instance.client.get(path: '/login', query:[
-			'name': this.name]);
-
-		return responseLogin.data
-	}
 
 	public void chat(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
@@ -97,46 +92,16 @@ class Messenger {
 		println "Please type a new command before continuing."
 	}
 	
-	public def convertToJSON(def obj) {
-		def json = new JsonBuilder(obj)
-		.toPrettyString()
-	}
+
 	
 	public void getOnlineUsers() {
 		def responseListOfUser = sender.client.get(path: '/list')
-		List<User> listOfUser = responseListOfUser.data;
-		for (user in listOfUser) {
-			System.out.println(user.name + " " + user.ip)
-		}
+//		List<User> listOfUser = responseListOfUser.data;
+//		for (user in listOfUser) {
+//			System.out.println(user.name + " " + user.ip)
+//		}
 	}
 
-	
-	public String validateChatPartnerName(){
-		def br = new BufferedReader(new InputStreamReader(System.in))
-		boolean nameIsCorrect=false
-		def chatPartnerName
-		
-		while(!nameIsCorrect){
-			chatPartnerName = br.readLine().trim().toLowerCase()
-			if (!chatPartnerName.isEmpty()){
-				if (isInList(chatPartnerName)){
-					nameIsCorrect=true
-				}
-			}
-			else{
-				println chatPartnerName " does not exist. Please chose another user."
-			}
-		}
-		return chatPartnerName
-	}
-
-	public boolean isInList(String name){
-		return true
-	}
-
-	boolean isValidEntry(String val){
-		(val == 'exit' ||val == 'list' || val == 'chat' || val == 'help') ? true : false
-	}
 
 	void executeUserEntry(String val) {
 
