@@ -9,6 +9,7 @@ class Messenger {
 //	 = sender.instance
 	Receiver receiver
 //	 = receiver.instance
+	boolean isWriting = false
 	def name
 	def commands = """
 			**********************************************
