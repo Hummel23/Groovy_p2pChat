@@ -49,6 +49,7 @@ static main(args) {
 			}else{
 				println "The command you entered is incorrect. Please try again."
 				println messenger.commands
+				command = br.readLine().trim().toLowerCase()
 			}
 		}
 	}
