@@ -13,7 +13,7 @@ abstract class Message {
 				
 		def msg = """
 		============================
-		Message from ${this.sender.toUpperCase()}:
+		${this.sender.toUpperCase()}:
 		----------------------------
 		${this.content}
 		============================"""
