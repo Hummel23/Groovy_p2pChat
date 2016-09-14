@@ -12,14 +12,9 @@ class Main {
 
 		boolean isLoggedIn = false;
 		def zahl = 1
-		//		List list = new ArrayList<String>()
-		//		list.add("Silvia")
-		//		list.add("Elif")
-		//		list.add("Maryna")
-
 
 		//call to server
-		RESTClient client = new RESTClient('http://192.168.178.26:8080/')
+		RESTClient client = new RESTClient('http://141.45.208.53:8080/')
 		def response = client.get(path: '/resource')
 		assert response.status == 200
 		assert response.data == 'Hello Server'
@@ -33,13 +28,13 @@ class Main {
 
 		println responseLogin.data
 
-		//		def responseListOfUser = client.get(path: '/list')
-		//		List<User> listOfUser = responseListOfUser.data;
-		//		for (user in listOfUser) {
-		//			System.out.println(user.name + " " + user.ip)
-		//		}
-		//		System.out.println("Press any key to close")
-		//		System.in.read()
+				def responseListOfUser = client.get(path: '/list')
+				List<User> listOfUser = responseListOfUser.data;
+				for (user in listOfUser) {
+					System.out.println(user.name + " " + user.ip)
+				}
+				System.out.println("Press any key to close")
+				System.in.read()
 
 
 
@@ -77,5 +72,4 @@ class Main {
 		//			println "Bye Bye"
 		//		}
 	}
-
 }
