@@ -59,12 +59,6 @@ Please choose a command or wait for messages and be happy:
 			}
 		}
 		this.receiver.startClientServer()
-		
-//		def inetAddr = InetAddr.InetAddr
-		//		def inetAddr = addUserToServer()	//TODO: change to this!!!!
-		//TODO get onlineUserList
-		//TODO start local server
-		
 		//		println "Got users inetAddr: ${addUserToServer()}"	//TEST
 		isOnline = true
 		println commands
