@@ -101,7 +101,6 @@ Please choose a command or wait for messages and be happy:
 	
 	public String showUserList(def onlineUsers) {
 		def list = ""
-		
 		for(user in onlineUsers) {
 			if(user.name != sender.instance.name){
 				list += "      " + user.name + "\n      -----------------\n"

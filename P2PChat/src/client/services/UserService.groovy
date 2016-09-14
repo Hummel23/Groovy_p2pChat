@@ -7,7 +7,7 @@ import client.InetAddr
 @Singleton
 class UserService {
 	
-	RESTClient client = new RESTClient("http://${InetAddr.UserServerInetAddr}:8080")
+	RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
 	
 	
 	
