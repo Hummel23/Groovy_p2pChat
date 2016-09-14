@@ -20,9 +20,14 @@ class Root {
 class Chat {
 	
 	@GET
-	public String getTextMessage(
+	public void getTextMessage(
 		@PathParam("message") String message) {
-		return message
+//		
+//		while(messenger.instance.isWriting){
+//			
+//		}
+
+		println message
 	}
 }
 
