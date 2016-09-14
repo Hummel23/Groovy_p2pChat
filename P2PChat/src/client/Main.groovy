@@ -1,11 +1,6 @@
 package client
 
-import client.services.TransportService;
-import groovyx.net.http.RESTClient
-
-import javax.ws.rs.core.GenericType
-import javax.ws.rs.core.MediaType
-import javax.ws.rs.core.Response;
+import client.services.ValidationService
 
 
 static main(args) {
@@ -16,17 +11,17 @@ static main(args) {
 	def br = new BufferedReader(new InputStreamReader(System.in))
 	
 	while(!messenger.isOnline){
-		messenger.name = br.readLine()
 		messenger.login()
 	}
 
 
 	while(messenger.isOnline){
 		def command = br.readLine().trim().toLowerCase()
+		
 		boolean commandIsCorrect=false
 		
 		while(!commandIsCorrect){
-			if(messenger.isValidEntry(command)){
+			if(ValidationService.instance.isValidEntry(command)){
 
 				messenger.executeUserEntry(command)
 				commandIsCorrect=true
