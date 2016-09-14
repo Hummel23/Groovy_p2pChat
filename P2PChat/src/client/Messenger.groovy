@@ -95,7 +95,7 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public def getOnlineUsers() {
-		RESTClient client = new RESTClient("http://${InetAddr.UserServerInetAddr}:8080")
+		RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
 		def response = client.get(path: '/list')
 		return response.data
 	}
