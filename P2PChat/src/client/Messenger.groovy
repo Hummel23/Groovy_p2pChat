@@ -1,7 +1,10 @@
 package client
 
+
 import client.services.TransportService
 import client.services.UserService
+import groovyx.net.http.RESTClient
+import client.services.MessageService
 
 @Singleton
 class Messenger {
@@ -9,21 +12,22 @@ class Messenger {
 	Sender sender
 	Receiver receiver
 	boolean isWriting = false
+	boolean isOnline = false
+	
+	def messageService = MessageService.instance
 	def name
 	def commands = """
-			**********************************************
-				List of possible Commands:
-				--------------------------
-				list : show a list of all online users
-				chat : write a message
-				exit : exit chat program
-				help : show commands
+**********************************************
+	List of possible Commands:
+	--------------------------
+	list : show a list of all online users
+	chat : write a message
+	exit : exit chat program
+	help : show commands
 
-			**********************************************
+**********************************************
 Please choose a command or wait for messages and be happy: 
 		"""
-
-	boolean isOnline = false
 
 
 	public void greeting(){
@@ -70,33 +74,67 @@ Please choose a command or wait for messages and be happy:
 		//TODO wait for command or incoming message
 	}
 
-
 	public void chat(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		println "Enter name of chat partner: "
-		//		def chatPartnerID = validateChatPartnerName()
-		//		def chatPartnerInetAddr = findInetAddr(chatPartnerID)
-		def chatPartnerInetAddr = InetAddr.ChatPartnerInetAddr
-		//			getListFromServer()
-		//			getIPFromList()
-		println "Enter message: "
+
+		def chatPartnerID = br.readLine().trim().toLowerCase()
+		def onlineUsers = getOnlineUsers()
+		
+		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
+		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
+		
+		if(!isValidChatPartnerID){
+			println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
+			println "Please try again or type 'list' to search for another user."
+			return
+		}
+
+		println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
 		def msg = br.readLine()
+		println msg
 		Message messageObject = new TextMessage(msg, sender.instance.name, "chatPartnerID")
-		def msgJson = convertToJSON(messageObject)
+		def msgJson = messageService.convertToJSON(messageObject)
 		sender.instance.sendMessage(msgJson)
 		println "Please type a new command before continuing."
 	}
 
 
-
-	public void getOnlineUsers() {
-		def responseListOfUser = sender.client.get(path: '/list')
-		//		List<User> listOfUser = responseListOfUser.data;
-		//		for (user in listOfUser) {
-		//			System.out.println(user.name + " " + user.ip)
-		//		}
+	
+	public def getOnlineUsers() {
+		RESTClient client = new RESTClient("http://${InetAddr.UserServerInetAddr}:8080")
+		def response = client.get(path: '/list')
+		return response.data
 	}
-
+	
+	public String showUserList(def onlineUsers) {
+		def list = ""
+		
+		for(user in onlineUsers) {
+			if(user.name != sender.instance.name){
+				list += "      " + user.name + "\n      -----------------\n"
+			}
+		}
+		return list
+	}
+	
+	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
+		println "in validateChatPartner: " + chatPartnerID
+		for(user in onlineUsers){
+			if(chatPartnerID == user.name.toLowerCase()){
+				return true
+			}
+		}
+		return false
+	}
+	
+	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
+		for(user in onlineUsers){
+			if(chatPartnerID == user.name.toLowerCase()) {
+				return user.ip
+			}
+		}
+	}
 
 	void executeUserEntry(String val) {
 
@@ -107,7 +145,16 @@ Please choose a command or wait for messages and be happy:
 			chat()
 		}
 		else if(val == 'list'){
-			//			getOnlineUsers()
+			def list = getOnlineUsers()
+			if(list.size() > 0) {
+			println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
+			println"      Want to chat? These users are online:"
+			println"      ====================================="
+			println showUserList(list)
+			println "++++++++++++++++++++++++++++++++++++++++++++++++"
+			} else {
+				 println "Sorry - nobody online"
+			}
 		}
 		else if(val == 'help'){
 			println commands
@@ -118,9 +165,7 @@ Please choose a command or wait for messages and be happy:
 		UserService.instance.removeUserFromServer()
 		this.receiver.stopClientServer()
 		isOnline=false
-		println "Thanks for using MESSAS. We are looking forward to seeing you again soon!"
+		println "Thanks for using MESSAS. \nWe are looking forward to seeing you again soon!"
 	}
-
-
 
 }
