@@ -42,7 +42,6 @@ static main(args) {
 		boolean commandIsCorrect=false
 		
 		while(!commandIsCorrect){
-			println "command valid:" + (command == 'help')
 			if(messenger.isValidEntry(command)){
 
 				messenger.executeUserEntry(command)

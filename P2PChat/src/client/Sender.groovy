@@ -10,7 +10,8 @@ class Sender {
 	RESTClient client
 
 	public void sendMessage(Message msg) {
-		def ip = getChatPartnerIP(msg.chatPartnerID)
+//		def ip = getChatPartnerIP(msg.chatPartnerID)
+		def ip = InetAddr.getChatPartnerInetAddr()
 		client = new RESTClient("http://${ip}:8080/")
 		def response = client.get(path: "/${msg.content}")
 		assert response.status == 200

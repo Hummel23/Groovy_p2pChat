@@ -68,13 +68,17 @@ class Messenger {
 	}
 
 	public void chat(){
+		def br = new BufferedReader(new InputStreamReader(System.in))
 		println "Enter name of chat partner: "
-		def chatPartnerID = validateChatPartnerName()
+//		def chatPartnerID = validateChatPartnerName()
 //		def chatPartnerInetAddr = findInetAddr(chatPartnerID)
 		def chatPartnerInetAddr = InetAddr.ChatPartnerInetAddr
 		//			getListFromServer()
 		//			getIPFromList()
 		println "Enter message: "
+		def msg = br.readLine()
+		sender.instance.sendMessage(msg)
+		println "Please type a new command before continuing."
 	}
 	
 	public void getOnlineUsers() {
