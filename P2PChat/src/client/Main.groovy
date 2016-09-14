@@ -9,18 +9,7 @@ import javax.ws.rs.core.Response;
 
 
 static main(args) {
-	//call to server
-	//				TransportService transportService = new TransportService()
-	//		transportService.connectToUserServer("141.45.206.251")
 
-	//read input from console
-	//				def br = new BufferedReader(new InputStreamReader(System.in))
-	//
-	//				println "Please enter your username: "
-	//				def userName = br.readLine()
-
-
-	//create sender & receiver & start local server
 	def messenger = Messenger.instance
 	messenger.greeting()
 
@@ -48,6 +37,5 @@ static main(args) {
 			}
 		}
 	}
-
 }
 

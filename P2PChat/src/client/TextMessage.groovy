@@ -11,5 +11,15 @@ class TextMessage extends Message {
 		this.chatPartnerID = chatPartnerID
 	}
 	
+	@Override
+	public String toString() {
+				
+		return """
+		============================
+		${this.sender.toUpperCase()}:
+		----------------------------
+		${this.content}
+		============================"""
+	}
 	
 }

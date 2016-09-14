@@ -1,5 +1,6 @@
 package client
 
+import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
 @Singleton
@@ -90,27 +91,31 @@ class Messenger {
 		//			getIPFromList()
 		println "Enter message: "
 		def msg = br.readLine()
-		sender.instance.sendMessage(msg)
+		Message messageObject = new TextMessage(msg, sender.instance.name, "chatPartnerID")
+		def msgJson = convertToJSON(messageObject)
+		sender.instance.sendMessage(msgJson)
 		println "Please type a new command before continuing."
 	}
 	
+	public def convertToJSON(def obj) {
+		def json = new JsonBuilder(obj)
+		.toPrettyString()
+	}
+	
 	public void getOnlineUsers() {
-		
 		def responseListOfUser = sender.client.get(path: '/list')
 		List<User> listOfUser = responseListOfUser.data;
 		for (user in listOfUser) {
 			System.out.println(user.name + " " + user.ip)
 		}
-		System.out.println("Press any key to close")
-		System.in.read()
 	}
 
 	
 	public String validateChatPartnerName(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
-		
 		boolean nameIsCorrect=false
 		def chatPartnerName
+		
 		while(!nameIsCorrect){
 			chatPartnerName = br.readLine().trim().toLowerCase()
 			if (!chatPartnerName.isEmpty()){
@@ -124,29 +129,6 @@ class Messenger {
 		}
 		return chatPartnerName
 	}
-	
-	//TODO implement findInetAddr (-> put in UserService)
-//	public String findInetAddr(String name){
-//		def jsonText = '''
-//{
-//    "message": {
-//        "header": {
-//            "from": "mrhaki",
-//            "to": ["Groovy Users", "Java Users"]
-//        },
-//        "body": "Check out Groovy's gr8 JSON support."
-//    }
-//}      
-//'''
-//		 
-//		def json = new JsonSlurper().parseText(jsonText)
-//		 
-//		def header = json.message.header
-//		assert header.from == 'mrhaki'
-//		assert header.to[0] == 'Groovy Users'
-//		assert header.to[1] == 'Java Users'
-//		assert json.message.body == "Check out Groovy's gr8 JSON support."
-//	}
 
 	public boolean isInList(String name){
 		return true
@@ -173,7 +155,6 @@ class Messenger {
 	}
 
 	public void logout(){
-
 		//TODO logout from userServer by removing user from list
 		this.receiver.stopClientServer()
 		isOnline=false
