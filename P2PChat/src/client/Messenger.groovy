@@ -1,8 +1,7 @@
 package client
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 import groovyx.net.http.RESTClient
+import client.services.MessageService
 
 @Singleton
 class Messenger {
@@ -10,6 +9,8 @@ class Messenger {
 	Sender sender
 	Receiver receiver
 	boolean isWriting = false
+	boolean isOnline = false
+	def messageService = MessageService.instance
 	def name
 	def commands = """
 **********************************************
@@ -22,7 +23,6 @@ class Messenger {
 
 **********************************************"""
 
-	boolean isOnline = false
 
 	public void greeting(){
 		println "Welcome to MESSAS! Please type your name if you want to log in."
@@ -61,15 +61,23 @@ class Messenger {
 	public void chat(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		println "Enter name of chat partner: "
-//		def chatPartnerID = validateChatPartnerName()
-//		def chatPartnerInetAddr = findInetAddr(chatPartnerID)
-		def chatPartnerInetAddr = InetAddr.ChatPartnerInetAddr
-		//			getListFromServer()
-		//			getIPFromList()
-		println "Enter message: "
+		def chatPartnerID = br.readLine().trim().toLowerCase()
+		def onlineUsers = getOnlineUsers()
+		
+		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
+		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
+		
+		if(!isValidChatPartnerID){
+			println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
+			println "Please try again or type 'list' to search for another user."
+			return
+		}
+
+		println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
 		def msg = br.readLine()
+		println msg
 		Message messageObject = new TextMessage(msg, sender.instance.name, "chatPartnerID")
-		def msgJson = convertToJSON(messageObject)
+		def msgJson = messageService.convertToJSON(messageObject)
 		sender.instance.sendMessage(msgJson)
 		println "Please type a new command before continuing."
 	}
@@ -90,7 +98,24 @@ class Messenger {
 		}
 		return list
 	}
-
+	
+	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
+		println "in validateChatPartner: " + chatPartnerID
+		for(user in onlineUsers){
+			if(chatPartnerID == user.name.toLowerCase()){
+				return true
+			}
+		}
+		return false
+	}
+	
+	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
+		for(user in onlineUsers){
+			if(chatPartnerID == user.name.toLowerCase()) {
+				return user.ip
+			}
+		}
+	}
 
 	void executeUserEntry(String val) {
 
@@ -102,11 +127,10 @@ class Messenger {
 		}
 		else if(val == 'list'){
 			def list = getOnlineUsers()
-			println "list is: " + list
 			if(list.size() > 0) {
-			println "++++++++++++++++++++++++++++++++++++++++++++++++"
+			println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
 			println"      Want to chat? These users are online:"
-			println "     ====================================="
+			println"      ====================================="
 			println showUserList(list)
 			println "++++++++++++++++++++++++++++++++++++++++++++++++"
 			} else {
@@ -122,7 +146,7 @@ class Messenger {
 		//TODO logout from userServer by removing user from list
 		this.receiver.stopClientServer()
 		isOnline=false
-		println "Thanks for using MESSAS. We are looking forward to seeing you again soon!"
+		println "Thanks for using MESSAS. \nWe are looking forward to seeing you again soon!"
 	}
 
 }
