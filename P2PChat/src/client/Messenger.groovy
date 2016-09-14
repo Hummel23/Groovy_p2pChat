@@ -39,10 +39,7 @@ Please choose a command or wait for messages and be happy:
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		this.name = br.readLine().toLowerCase()
 		receiver = Receiver.instance	
-		sender = Sender.instance
-		
-//		this.name =  br.readLine()
-		
+		sender = Sender.instance	
 		boolean userAdded = false
 		while(!userAdded){
 			def login = UserService.instance.addUserToServer(this.name)
