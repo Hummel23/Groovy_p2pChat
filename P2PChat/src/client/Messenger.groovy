@@ -35,7 +35,7 @@ class Messenger {
 
 		//TODO login at userserver
 		//TODO get own IP-address from Server
-		def inetAddr = "145.45.211.14"
+		def inetAddr = InetAddr.InetAddr
 		//TODO get onlineUserList
 		//TODO start local server
 		receiver = Receiver.instance
@@ -53,7 +53,7 @@ class Messenger {
 		println "Enter name of chat partner: "
 		def chatPartnerID = validateChatPartnerName()
 //		def chatPartnerInetAddr = findInetAddr(chatPartnerID)
-		def chatPartnerInetAddr = "141.45.206.251"
+		def chatPartnerInetAddr = InetAddr.ChatPartnerInetAddr
 		
 		
 
