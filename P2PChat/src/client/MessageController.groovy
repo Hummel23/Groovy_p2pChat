@@ -26,8 +26,6 @@ class Chat {
 //		while(messenger.instance.isWriting){
 //			
 //		}
-
-		println message
 	}
 }
 

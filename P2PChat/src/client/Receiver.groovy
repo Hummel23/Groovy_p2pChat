@@ -1,5 +1,6 @@
 package client
 
+import groovy.json.JsonSlurper
 import org.glassfish.grizzly.http.server.HttpServer
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory
 import org.glassfish.jersey.server.ResourceConfig
@@ -15,8 +16,18 @@ class Receiver {
 	HttpServer server
 
 
-	public void receiveMessage(Message msg) {
+	public void receiveMessage(def msg) {
+		def json = new JsonSlurper().parseText(msg)		
+		String sender = json['sender']
+		String content = json['content']
 		
+		println """
+	°°°°°°°°°°°°°°°°°°°°°°°°°
+	von ${sender.toUpperCase()}:
+	-------------------------
+	${content}
+
+	°°°°°°°°°°°°°°°°°°°°°°°°°"""
 	}
 
 	def startClientServer() {
