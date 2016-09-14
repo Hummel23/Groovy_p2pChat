@@ -40,6 +40,7 @@ Please choose a command or wait for messages and be happy:
 		this.name = br.readLine().toLowerCase()
 		receiver = Receiver.instance	
 		sender = Sender.instance	
+		sender = Sender.instance		
 		boolean userAdded = false
 		while(!userAdded){
 			def login = UserService.instance.addUserToServer(this.name)
@@ -108,7 +109,7 @@ Please choose a command or wait for messages and be happy:
 		}
 		return list
 	}
-	
+
 	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
 		println "in validateChatPartner: " + chatPartnerID
 		for(user in onlineUsers){
@@ -118,7 +119,7 @@ Please choose a command or wait for messages and be happy:
 		}
 		return false
 	}
-	
+
 	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
 		for(user in onlineUsers){
 			if(chatPartnerID == user.name.toLowerCase()) {
@@ -138,13 +139,13 @@ Please choose a command or wait for messages and be happy:
 		else if(val == 'list'){
 			def list = getOnlineUsers()
 			if(list.size() > 0) {
-			println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
-			println"      Want to chat? These users are online:"
-			println"      ====================================="
-			println showUserList(list)
-			println "++++++++++++++++++++++++++++++++++++++++++++++++"
+				println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
+				println"      Want to chat? These users are online:"
+				println"      ====================================="
+				println showUserList(list)
+				println "++++++++++++++++++++++++++++++++++++++++++++++++"
 			} else {
-				 println "Sorry - nobody online"
+				println "Sorry - nobody online"
 			}
 		}
 		else if(val == 'help'){

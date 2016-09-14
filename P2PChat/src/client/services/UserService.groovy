@@ -7,7 +7,7 @@ import client.InetAddr
 @Singleton
 class UserService {
 	
-	RESTClient client = new RESTClient("http://${InetAddr.ServerInetAddr}:8080")
+	RESTClient client = new RESTClient("http://${InetAddr.UserServerInetAddr}:8080")
 	
 	
 	
@@ -49,7 +49,7 @@ class UserService {
 	
 	//TODO logout from userServer by removing user from list
 	public void removeUserFromServer(){
-		
+		client.get(path: '/logout')
 	}
 
 }
