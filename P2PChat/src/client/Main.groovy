@@ -23,13 +23,11 @@ class Main {
 		messenger.greeting()
 
 		def br = new BufferedReader(new InputStreamReader(System.in))
-		boolean isLoggedIn = false
 
-		while(isLoggedIn==false){
+		while(!messenger.isOnline){
 			def command = br.readLine()
 			if(command == "login"){
 				messenger.login()
-				isLoggedIn=true
 			}
 			else {
 				println messenger.name+ ",please enter <login>, if you want to log in. "
