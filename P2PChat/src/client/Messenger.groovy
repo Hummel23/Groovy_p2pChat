@@ -137,6 +137,7 @@ class Messenger {
 		//TODO logout from userServer by removing user from list
 		receiver.instance.stopClientServer()
 		isOnline=false
+		println "Thanks for using MESSAS. We are looking forward to seeing you again soon!"
 	}
 
 
