@@ -5,8 +5,10 @@ import groovy.json.JsonSlurper
 @Singleton
 class Messenger {
 
-	Sender sender = sender.instance
-	Receiver receiver = receiver.instance
+	Sender sender
+//	 = sender.instance
+	Receiver receiver
+//	 = receiver.instance
 	def name
 	def commands = """
 			**********************************************
@@ -42,22 +44,24 @@ class Messenger {
 
 	public void login(){
 
-		println "Got users inetAddr: ${addUserToServer()}"	//TEST
 		def inetAddr = InetAddr.InetAddr	
 //		def inetAddr = addUserToServer()	//TODO: change to this!!!!
 		//TODO get onlineUserList
 		//TODO start local server
-		this.receiver.name = name
+		receiver = Receiver.instance
+		receiver.name = name
 		this.receiver.inetAddr = inetAddr
 		this.receiver.startClientServer()
+		sender = Sender.instance
 		this.sender.name = name
+//		println "Got users inetAddr: ${addUserToServer()}"	//TEST
 		isOnline = true
 		println commands
 		//TODO wait for command or incoming message
 	}
 	
 	public String addUserToServer() {
-		def responseLogin = sender.client.get(path: '/login', query:[
+		def responseLogin = sender.instance.client.get(path: '/login', query:[
 			'name': this.name]);
 
 		return responseLogin.data
@@ -74,6 +78,7 @@ class Messenger {
 	}
 	
 	public void getOnlineUsers() {
+		
 		def responseListOfUser = sender.client.get(path: '/list')
 		List<User> listOfUser = responseListOfUser.data;
 		for (user in listOfUser) {

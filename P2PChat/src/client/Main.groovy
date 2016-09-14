@@ -36,13 +36,12 @@ static main(args) {
 		}
 	}
 
-	boolean commandIsCorrect=false
 
 	while(messenger.isOnline){
+		def command = br.readLine().trim().toLowerCase()
+		boolean commandIsCorrect=false
+		
 		while(!commandIsCorrect){
-			println "command:" + commandIsCorrect
-			def command = br.readLine().trim().toLowerCase()
-			println "command = " + command
 			println "command valid:" + (command == 'help')
 			if(messenger.isValidEntry(command)){
 
