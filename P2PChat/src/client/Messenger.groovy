@@ -5,8 +5,8 @@ import groovy.json.JsonSlurper
 @Singleton
 class Messenger {
 
-	Sender sender
-	Receiver receiver 
+	Sender sender = sender.instance
+	Receiver receiver = receiver.instance
 	def name
 	def commands = """
 			**********************************************
@@ -27,26 +27,40 @@ class Messenger {
 		
 		println "Please enter your username: "
 		this.name = br.readLine()
+		//TODO: validateName()
+		//		final String keyOfMap = "username"
+		//
+		//			println "Please enter your nickname: "
+		//			userName = br.readLine()
+		//			//mapOfUser.put(keyOfMap, userName)
+		//			//isLoggedIn = client.put(mapOfUser)
+		//			println "The nickname " + userName + " is already in use."
+		
 		println "Welcome to MESSAS ${this.name} Please type <login>, if you want to login. "
 
 	}
 
 	public void login(){
 
-		//TODO login at userserver
-		//TODO get own IP-address from Server
-		def inetAddr = InetAddr.InetAddr
+		println "Got users inetAddr: ${addUserToServer()}"	//TEST
+		def inetAddr = InetAddr.InetAddr	
+//		def inetAddr = addUserToServer()	//TODO: change to this!!!!
 		//TODO get onlineUserList
 		//TODO start local server
-		receiver = Receiver.instance
-		receiver.name = name
-		receiver.inetAddr = inetAddr
-		receiver.startClientServer()
-		sender = Sender.instance
-		sender.name = name
+		this.receiver.name = name
+		this.receiver.inetAddr = inetAddr
+		this.receiver.startClientServer()
+		this.sender.name = name
 		isOnline = true
 		println commands
 		//TODO wait for command or incoming message
+	}
+	
+	public String addUserToServer() {
+		def responseLogin = sender.client.get(path: '/login', query:[
+			'name': this.name]);
+
+		return responseLogin.data
 	}
 
 	public void chat(){
@@ -54,15 +68,19 @@ class Messenger {
 		def chatPartnerID = validateChatPartnerName()
 //		def chatPartnerInetAddr = findInetAddr(chatPartnerID)
 		def chatPartnerInetAddr = InetAddr.ChatPartnerInetAddr
-		
-		
-
-
-
-
 		//			getListFromServer()
 		//			getIPFromList()
 		println "Enter message: "
+	}
+	
+	public void getOnlineUsers() {
+		def responseListOfUser = sender.client.get(path: '/list')
+		List<User> listOfUser = responseListOfUser.data;
+		for (user in listOfUser) {
+			System.out.println(user.name + " " + user.ip)
+		}
+		System.out.println("Press any key to close")
+		System.in.read()
 	}
 
 	
@@ -135,7 +153,7 @@ class Messenger {
 	public void logout(){
 
 		//TODO logout from userServer by removing user from list
-		receiver.instance.stopClientServer()
+		this.receiver.stopClientServer()
 		isOnline=false
 		println "Thanks for using MESSAS. We are looking forward to seeing you again soon!"
 	}

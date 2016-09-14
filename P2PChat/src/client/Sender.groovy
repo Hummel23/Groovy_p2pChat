@@ -7,11 +7,11 @@ import groovyx.net.http.RESTClient
 class Sender {
 
 	def name
-
+	RESTClient client
 
 	public void sendMessage(Message msg) {
 		def ip = getChatPartnerIP(msg.chatPartnerID)
-		RESTClient client = new RESTClient("http://${ip}:8080/")
+		client = new RESTClient("http://${ip}:8080/")
 		def response = client.get(path: "/${msg.content}")
 		assert response.status == 200
 //		assert response.data == 'Hello Server'
