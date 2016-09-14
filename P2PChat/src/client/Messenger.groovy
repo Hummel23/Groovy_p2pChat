@@ -39,6 +39,7 @@ Please choose a command or wait for messages and be happy:
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		this.name = br.readLine().toLowerCase()
 		receiver = Receiver.instance	
+		sender = Sender.instance	
 		sender = Sender.instance		
 		boolean userAdded = false
 		while(!userAdded){
@@ -66,43 +67,41 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public void chat(){
+		def br = new BufferedReader(new InputStreamReader(System.in))
+		println "Enter name of chat partner: "
+
+		def chatPartnerID = br.readLine().trim().toLowerCase()
 		def onlineUsers = getOnlineUsers()
-		if(onlineUsers.size() > 0) {
-			def br = new BufferedReader(new InputStreamReader(System.in))
-			println "Enter name of chat partner: "
-			def chatPartnerID = br.readLine().trim().toLowerCase()
-
-			def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
-			def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
-
-			if(!isValidChatPartnerID){
-				println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
-				println "Please try again or type 'list' to search for another user."
-				return
-			}
-
-			println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
-			def msg = br.readLine()
-			println "Please type a new command before continuing."
-			Message messageObject = new TextMessage(msg, sender.instance.name, "chatPartnerID")
-			def msgJson = messageService.convertToJSON(messageObject)
-			sender.instance.sendMessage(msgJson)
-			println "Please type a new command before continuing."
+		
+		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
+		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
+		
+		if(!isValidChatPartnerID){
+			println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
+			println "Please try again or type 'list' to search for another user."
+			return
 		}
-		else{
-			println "Sorry - nobody online"
-		}
+
+		println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
+		def msg = br.readLine()
+		println msg
+		Message messageObject = new TextMessage(msg, sender.instance.name, "chatPartnerID")
+		def msgJson = messageService.convertToJSON(messageObject)
+		sender.instance.sendMessage(msgJson)
+		println "Please type a new command before continuing."
 	}
 
+
+	
 	public def getOnlineUsers() {
 		RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
 		def response = client.get(path: '/list')
 		return response.data
 	}
-
+	
 	public String showUserList(def onlineUsers) {
 		def list = ""
-
+		
 		for(user in onlineUsers) {
 			if(user.name != sender.instance.name){
 				list += "      " + user.name + "\n      -----------------\n"
