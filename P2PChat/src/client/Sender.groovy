@@ -19,7 +19,6 @@ class Sender {
 			def msgJson = messageService.convertToJSON(messageObject)
 			client = new RESTClient("http://${chatPartnerIp}:8080/")
 			def response = client.get(path: "/${msgJson}")
-			println response
 //			if(response.status == 204) {	//successful, but no returned content
 //				println ">> sent successfully <<"
 //			}
@@ -28,6 +27,6 @@ class Sender {
 //		}
 		
 //		MessageService.instance.storeMessage(messageObject)
-			}
+		}
 
 }
