@@ -9,8 +9,6 @@ class UserService {
 	
 	RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
 	
-	
-	
 	//asks the user to enter the name of the Chatpartner and checks that the name entered is 
 	// is registered at the userServer. If the name is not registered at the userserver
 	//the user will be asked to enter another name. If the name is known the method returns the

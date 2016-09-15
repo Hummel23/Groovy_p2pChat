@@ -64,6 +64,7 @@ Please choose a command or wait for messages and be happy:
 		isOnline = true
 		println commands
 		//TODO wait for command or incoming message
+		
 	}
 
 	public void chat(){
@@ -72,7 +73,7 @@ Please choose a command or wait for messages and be happy:
 
 		def chatPartnerID = br.readLine().trim().toLowerCase()
 		def onlineUsers = getOnlineUsers()
-		
+	
 		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
 		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
 		
@@ -84,10 +85,7 @@ Please choose a command or wait for messages and be happy:
 
 		println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
 		def msg = br.readLine()
-		println msg
-		Message messageObject = new TextMessage(msg, sender.instance.name, "chatPartnerID")
-		def msgJson = messageService.convertToJSON(messageObject)
-		sender.instance.sendMessage(msgJson)
+		sender.instance.sendMessage(msg)
 		println "Please type a new command before continuing."
 	}
 
@@ -110,7 +108,6 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
-		println "in validateChatPartner: " + chatPartnerID
 		for(user in onlineUsers){
 			if(chatPartnerID == user.name.toLowerCase()){
 				return true
