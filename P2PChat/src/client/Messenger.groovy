@@ -107,13 +107,15 @@ class Messenger {
 //	}
 	
 	public String showUserList(def onlineUsers) {
-		def list = ""
-		onlineUsers.each { it ->
-			if(it.name != sender.instance.name){
-				list += "	> " + it.name + "\n"
-			}
+		def userList = ""
+		def users = onlineUsers.findAll {it -> it.name != sender.instance.name}
+		users.each { it ->
+				userList += "	> " + it.name + "\n"
+				if(it != users.last()){
+					userList += "\n      -----------------\n"
+				}
 		}
-		return list
+		return userList
 	}
 
 	void executeUserEntry(String val) {

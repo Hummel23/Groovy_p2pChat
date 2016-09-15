@@ -1,8 +1,5 @@
 package client
 
-import groovy.transform.ToString
-
-
 abstract class Message {
 	
 	def content, sender, chatPartnerID

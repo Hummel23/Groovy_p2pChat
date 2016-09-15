@@ -16,11 +16,17 @@ class Sender {
 //		println "ip: $ip"
 		Message messageObject = new TextMessage(msg, this.name, chatPartnerName)
 		def msgJson = messageService.convertToJSON(messageObject)	
-//		println "JSON: "+msgJson
-		client = new RESTClient("http://${chatPartnerIp}:8080/")
+		client = new RESTClient("http://${ip}:8080/")
 		def response = client.get(path: "/${msgJson}")
-//		println "resp: "+ response.data
-//		println "status: "+ response.status
+		if(response.status == 204) {	//successful, but no returned content
+			println ">>erfolgreich gesendet<<"
+		}
+		else {
+			println ">>diese Nachricht ist im Nirvana verschwunden<<"
+		}
+		
+//		MessageService.instance.storeMessage(messageObject)
+		//TODO: notify user if message could not be sent.	
 	}
 		
 		//-----
