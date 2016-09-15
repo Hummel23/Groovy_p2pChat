@@ -16,11 +16,12 @@ class Sender {
 //		println "ip: $ip"
 		Message messageObject = new TextMessage(msg, this.name, chatPartnerName)
 		def msgJson = messageService.convertToJSON(messageObject)	
-		println "JSON: "+msgJson
+//		println "JSON: "+msgJson
 		client = new RESTClient("http://${chatPartnerIp}:8080/")
 		def response = client.get(path: "/${msgJson}")
-		println "resp: "+ response.data
-		println "status: "+ response.status
+//		println "resp: "+ response.data
+//		println "status: "+ response.status
+	}
 		
 		//-----
 //		@Produces([MediaType.APPLICATION_JSON])
@@ -59,7 +60,6 @@ class Sender {
 //			println "POST Success: ${resp.statusLine}"
 //			assert resp.statusLine.statusCode == 201	//201 = Created
 //		}		
-	}
 	
 //	public String getChatPartnerIP(String id){
 //		return "141.45.206.251"

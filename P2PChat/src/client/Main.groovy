@@ -15,7 +15,6 @@ static main(args) {
 		messenger.login()
 	}
 
-
 	while(messenger.isOnline){
 		def command = br.readLine().trim().toLowerCase()
 		

@@ -9,10 +9,11 @@ class UserService {
 	
 	RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
 	
-	//asks the user to enter the name of the Chatpartner and checks that the name entered is 
-	// is registered at the userServer. If the name is not registered at the userserver
-	//the user will be asked to enter another name. If the name is known the method returns the
-	// correct name (beautified)
+	/**asks the user to enter the name of the Chatpartner and checks that the name entered is 
+	* is registered at the userServer. If the name is not registered at the userserver
+	* the user will be asked to enter another name. If the name is known the method returns the
+	* correct name (beautified)
+	**/ 
 	public String validateChatPartnerName(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		boolean nameIsCorrect=false
@@ -32,10 +33,17 @@ class UserService {
 		return chatPartnerName
 	}
 	
-	//iterates through the list received from the userserver and checks if the name entered
-	// is present in the list
+	/**
+	 * iterates through the list received from the userserver and checks if the name entered
+	 * is present in the list
+	 */
 	public boolean isInList(String name){
 		return true
+	}
+	
+	public def getOnlineUsers() {
+		def response = this.client.get(path: '/list')
+		return response.data
 	}
 	
 	public String addUserToServer(String name) {

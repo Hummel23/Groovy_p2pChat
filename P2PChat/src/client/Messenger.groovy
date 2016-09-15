@@ -29,10 +29,8 @@ class Messenger {
 Please choose a command or wait for messages and be happy: 
 		"""
 
-
 	public void greeting(){
-		println "Welcome to MESSAS! Please type your name if you want to log in."
-
+		println "Welcome to MESSAS!\nPlease type your name if you want to log in."
 	}
 
 	public void login(){
@@ -48,7 +46,7 @@ Please choose a command or wait for messages and be happy:
 			if(login == ""){
 				println "This name is already in use. Please choose another name."
 				this.name = br.readLine().toLowerCase()
-				
+
 			}else{
 //				println "name to be saved:"+ name
 				this.name = name
@@ -67,77 +65,76 @@ Please choose a command or wait for messages and be happy:
 
 	}
 
-	public void chat(){
+	public void chat(String val){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		boolean chatPartnerChosen = false
-		println "Enter name of chat partner: "
-
-		def chatPartnerName = br.readLine().trim().toLowerCase()
-		def chatPartnerInetAddr = UserService.instance.getInetAddrChatPartner(chatPartnerName)
-		println chatPartnerInetAddr
-		if (chatPartnerInetAddr==""){
-			println "Sorry - there is no user online with the name \"${chatPartnerName.toUpperCase()}\"."
-			println "Please try again or type 'list' to search for another user."
-			return
+		def chatPartnerName
+		if(val == 'chat') {
+			println "Enter name of chat partner: "
+			chatPartnerName = br.readLine().trim().toLowerCase()
+		}else{
+			chatPartnerName = val
 		}
-	println "Enter message to \"${chatPartnerName.toUpperCase()}\": "
-	def msg = br.readLine()
-	sender.instance.sendMessage(msg, chatPartnerInetAddr, chatPartnerName)
-	println "Please type a new command before continuing."
-}
-
-
-
-	
-	public def getOnlineUsers() {
-		RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
-		def response = client.get(path: '/list')
-		return response.data
+		
+		def chatPartnerInetAddr = UserService.instance.getInetAddrChatPartner(chatPartnerName)
+		if (chatPartnerInetAddr==""){
+				println "Sorry - there is no user online with the name \"${chatPartnerName.toUpperCase()}\"."
+				println "Please try again or type 'list' to search for another user."
+				return
+			}
+		println "Enter message to \"${chatPartnerName.toUpperCase()}\": "
+		def msg = br.readLine()
+		sender.instance.sendMessage(msg, chatPartnerInetAddr, chatPartnerName)
+		println "Please type a new command before continuing."
 	}
+
+
+//	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
+//		for(user in onlineUsers) {
+//				if(chatPartnerID == user.name.toLowerCase()){
+//				return true
+//			}
+//		}
+//		return false
+//	}
+//
+//	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
+//		for(user in onlineUsers) {
+//			if(chatPartnerID == user.name.toLowerCase()) {
+//				return user.ip
+//			}
+//		}
+//	}
 	
 	public String showUserList(def onlineUsers) {
 		def list = ""
-		for(user in onlineUsers) {
-			if(user.name != sender.instance.name){
-				list += "      " + user.name + "\n      -----------------\n"
+		onlineUsers.each { it ->
+			if(it.name != sender.instance.name){
+				list += "      " + it.name + "\n      -----------------\n"
 			}
 		}
 		return list
 	}
 
-	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
-		for(user in onlineUsers){
-			if(chatPartnerID == user.name.toLowerCase()){
-				return true
-			}
-		}
-		return false
-	}
-
-	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
-		for(user in onlineUsers){
-			if(chatPartnerID == user.name.toLowerCase()) {
-				return user.ip
-			}
-		}
-	}
-
 	void executeUserEntry(String val) {
-
+		val = val.trim().toLowerCase()
+		
 		if(val == 'exit') {
 			logout()
 		}
 		else if(val == 'chat'){
-			chat()
+			chat(val)
 		}
 		else if(val == 'list'){
-			def list = getOnlineUsers()
-			if(list.size() > 0) {
-				println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
-				println"      Want to chat? These users are online:"
-				println"      ====================================="
+			def list = UserService.instance.getOnlineUsers()
+			if(list.size() > 1) {
+				println "+++++++++++++++++++++++++++++++++++++++++++++\n"
+				println "    Want to chat? These users are online:"
+				println "    ====================================="
 				println showUserList(list)
-				println "++++++++++++++++++++++++++++++++++++++++++++++++"
+				println "    ====================================="
+				println "    Type 'chat' or a name to start a conversation."
+				println "+++++++++++++++++++++++++++++++++++++++++++++"
 			} else {
 				println "Sorry - nobody online"
 			}
@@ -150,7 +147,7 @@ Please choose a command or wait for messages and be happy:
 	public void logout(){
 		UserService.instance.removeUserFromServer()
 		this.receiver.stopClientServer()
-		isOnline=false
+		isOnline = false
 		println "Thanks for using MESSAS. \nWe are looking forward to seeing you again soon!"
 	}
 
