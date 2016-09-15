@@ -89,8 +89,8 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
-		onlineUsers.each { it ->
-			if(chatPartnerID == it.name.toLowerCase()){
+		for(user in onlineUsers) {
+				if(chatPartnerID == user.name.toLowerCase()){
 				return true
 			}
 		}
@@ -98,9 +98,9 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
-		onlineUsers.each { it ->
-			if(chatPartnerID == it.name.toLowerCase()) {
-				return it.ip
+		for(user in onlineUsers) {
+			if(chatPartnerID == user.name.toLowerCase()) {
+				return user.ip
 			}
 		}
 	}
@@ -130,6 +130,8 @@ Please choose a command or wait for messages and be happy:
 				println "      Want to chat? These users are online:"
 				println "      ====================================="
 				println showUserList(list)
+				println "      ====================================="
+				println "      Type 'chat' to start a conversation."
 				println "++++++++++++++++++++++++++++++++++++++++++++++++"
 			} else {
 				println "Sorry - nobody online"
