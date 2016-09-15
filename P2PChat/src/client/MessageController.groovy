@@ -24,7 +24,8 @@ class Chat {
 	public void getTextMessage(
 		@PathParam("message") String message) {
 		def json = new JsonSlurper().parseText(message)
-		println messageToString(json)
+//		println messageToString(json)
+//		MessageService.instance.storeMessage(new TextMessage(json.content,json.sender,json.chatPartnerID))
 	}
 		
 	String messageToString(def message) {
