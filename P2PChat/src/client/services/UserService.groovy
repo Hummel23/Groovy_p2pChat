@@ -47,15 +47,14 @@ class UserService {
 	}
 	
 	public String addUserToServer(String name) {
-//		println "addUserMethode"
 		def responseLogin = client.get(path:'/login', query:['name':name])
-		println responseLogin.data
 		return responseLogin.data
 	}
 	
-	//TODO logout from userServer by removing user from list
-	public void removeUserFromServer(){
-		client.get(path: '/logout')
+
+	public boolean removeUserFromServer(){
+		def responseLogout = client.get(path:'/logout')
+		return responseLogout.data
 	}
 
 }
