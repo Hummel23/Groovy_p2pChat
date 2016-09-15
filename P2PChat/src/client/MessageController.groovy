@@ -7,14 +7,14 @@ import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 
-@Path('/')
-class Root {
-	
-	@GET
-	public String startServer() {
-		return "client server up..."
-	}
-}
+//@Path('/')
+//class Root {
+//	
+//	@GET
+//	public String startServer() {
+//		return "client server up..."
+//	}
+//}
 
 @Path('/{message}')
 class Chat {
@@ -29,11 +29,12 @@ class Chat {
 		
 	String messageToString(def message) {
 		return """
-	============================
-	${message.sender.toUpperCase()}:
-	----------------------------
-	${message.content}
-	============================"""
+╔=======================================================
+    ${message.sender.toUpperCase()}:
+    ----------------------------
+    ${message.content}
+╚=======================================================
+"""
 	}
 }
 

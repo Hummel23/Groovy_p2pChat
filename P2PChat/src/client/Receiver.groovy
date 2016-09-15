@@ -24,12 +24,11 @@ class Receiver {
 		this.lastSender = sender
 		
 		println """
-	°°°°°°°°°°°°°°°°°°°°°°°°°
-	von ${sender.toUpperCase()}:
-	-------------------------
-	${content}
-
-	°°°°°°°°°°°°°°°°°°°°°°°°°"""
+╔=======================================================
+    von ${sender.toUpperCase()}:
+    -------------------------
+    ${content}
+╚======================================================="""
 	}
 
 	def startClientServer() {
@@ -43,5 +42,3 @@ class Receiver {
 	}
 
 }
-
-
