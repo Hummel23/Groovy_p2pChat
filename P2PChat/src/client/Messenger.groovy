@@ -17,16 +17,16 @@ class Messenger {
 	def userService = UserService.instance
 	def name
 	def commands = """
-**********************************************
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
 	List of possible Commands:
-	--------------------------
+	---------------------------------------
 	list : show a list of all online users
 	chat : write a message
 	exit : exit chat program
 	help : show commands
 
-**********************************************
-Please choose a command or wait for messages and be happy: 
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 		"""
 
 	public void greeting(){
@@ -44,7 +44,7 @@ Please choose a command or wait for messages and be happy:
 			def login = UserService.instance.addUserToServer(this.name)
 			println "returned from userserver " + login
 			if(login == ""){
-				println "This name is already in use. Please choose another name."
+				System.err.println "This name is already in use. Please choose another name."
 				this.name = br.readLine().toLowerCase()
 
 			}else{
@@ -78,7 +78,7 @@ Please choose a command or wait for messages and be happy:
 		
 		def chatPartnerInetAddr = UserService.instance.getInetAddrChatPartner(chatPartnerName)
 		if (chatPartnerInetAddr==""){
-				println "Sorry - there is no user online with the name \"${chatPartnerName.toUpperCase()}\"."
+				System.err.println "Sorry - there is no user online with the name \"${chatPartnerName.toUpperCase()}\"."
 				println "Please try again or type 'list' to search for another user."
 				return
 			}
@@ -110,7 +110,7 @@ Please choose a command or wait for messages and be happy:
 		def list = ""
 		onlineUsers.each { it ->
 			if(it.name != sender.instance.name){
-				list += "      " + it.name + "\n      -----------------\n"
+				list += "	> " + it.name + "\n"
 			}
 		}
 		return list
@@ -128,15 +128,13 @@ Please choose a command or wait for messages and be happy:
 		else if(val == 'list'){
 			def list = UserService.instance.getOnlineUsers()
 			if(list.size() > 1) {
-				println "+++++++++++++++++++++++++++++++++++++++++++++\n"
-				println "    Want to chat? These users are online:"
-				println "    ====================================="
-				println showUserList(list)
-				println "    ====================================="
-				println "    Type 'chat' or a name to start a conversation."
-				println "+++++++++++++++++++++++++++++++++++++++++++++"
+			println"╔══════════════════════════════════════════════════════╗"
+			println"║		These users are online:                ║"
+			println"╚══════════════════════════════════════════════════════╝"
+			println showUserList(list)
 			} else {
 				println "Sorry - nobody online"
+				println "ಥ_ಥ"
 			}
 		}
 		else if(val == 'help'){
@@ -149,6 +147,23 @@ Please choose a command or wait for messages and be happy:
 		this.receiver.stopClientServer()
 		isOnline = false
 		println "Thanks for using MESSAS. \nWe are looking forward to seeing you again soon!"
+		println """
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░▄▄▀▀▀▀▀▄░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░▄▀░░░░░░░▀▄░░░░░░░░░░░░░░░░░░░░░░░░░░
+░▄▀░░░▄▄░░░░▀▀▀▀▀▀▀▄▄▀▀▀▀▀▀▀▀▀▀▀▀▄▄░░░░
+░█░░░░██░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▄░░
+░█░░░░██▄████▄░██▄░░░░▄██░▄████▄░░░░▀▄░
+░█░░░░██▀░░▀██▄░██▄░░██▀░██▀░▄██░░░░░█░
+░█░░░░██░░░░███░░█████▀░░██▄█▀▀░░░░░░█░
+░█░░░░███▄▄███▀░░░▀██▀░░░▀██▄▄▄██░░░░█░
+░▀▄░░░░▀▀▀▀▀▀░░░░░██▀░░░░░░▀▀▀▀▀░░░░░█░
+░░▀▄░░░░░░░░░░░░░██▀░░░▄▄░░░░░░░░░▄▄▀░░
+░░░░▀▀▀▀▀▀▀▀▀▄░░░▀▀░░░▄▀░▀▀▀▀▀▀▀▀▀░░░░░
+░░░░░░░░░░░░░▀▄░░░░░░▄▀░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░▀▀▀▀▀▀░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+"""
 	}
 
 }
