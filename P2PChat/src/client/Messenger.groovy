@@ -152,12 +152,11 @@ Please choose a command or wait for messages and be happy:
 		}
 	}
 
-	public boolean logout(){
+	public void logout(){
 		UserService.instance.removeUserFromServer()
 		this.receiver.stopClientServer()
 		isOnline=false
 		println "Thanks for using MESSAS. \nWe are looking forward to seeing you again soon!"
-		return isOnline
 	}
 
 }

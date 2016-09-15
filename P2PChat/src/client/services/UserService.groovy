@@ -46,10 +46,9 @@ class UserService {
 	}
 	
 
-	
-	//TODO logout from userServer by removing user from list
 	public boolean removeUserFromServer(){
-		client.get(path:'/logout')
+		def responseLogout = client.get(path:'/logout')
+		return responseLogout.data
 	}
 
 }
