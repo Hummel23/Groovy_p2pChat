@@ -16,25 +16,10 @@ class Receiver {
 	HttpServer server
 	String lastSender
 
-	public void receiveMessage(def msg) {
-		def json = new JsonSlurper().parseText(msg)		
-		String sender = json['sender']
-		String content = json['content']
-		this.lastSender = sender
-		
-		println """
-╔=====================================================
-    von ${sender.toUpperCase()}:
-    -------------------------
-    ${content}
-╚=====================================================
-	"""
-	}
-
 	def startClientServer() {
 		this.server = GrizzlyHttpServerFactory.createHttpServer(
 			"http://${this.inetAddr}:8080".toURI(), new ResourceConfig(Chat.class))
-		println "startet local server..."
+//		println "startet local server..."
 	}
 	
 	def stopClientServer() {

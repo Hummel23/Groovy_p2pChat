@@ -1,6 +1,6 @@
 package client
 class InetAddr {
 	
-	static final String UserServerInetAddr = "http://141.45.215.144:8081"
+	static final String UserServerInetAddr = "http://192.168.2.104:8081"
 	
 }
