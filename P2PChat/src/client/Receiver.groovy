@@ -16,7 +16,6 @@ class Receiver {
 	HttpServer server
 	String lastSender
 
-
 	public void receiveMessage(def msg) {
 		def json = new JsonSlurper().parseText(msg)		
 		String sender = json['sender']

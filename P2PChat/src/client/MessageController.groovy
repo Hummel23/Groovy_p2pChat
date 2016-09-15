@@ -8,15 +8,6 @@ import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 
-//@Path('/')
-//class Root {
-//	
-//	@GET
-//	public String startServer() {
-//		return "client server up..."
-//	}
-//}
-
 @Path('/{message}')
 class Chat {
 	
@@ -26,7 +17,7 @@ class Chat {
 		@PathParam("message") String message) {
 		def json = new JsonSlurper().parseText(message)
 		println messageToString(json)
-//		MessageService.instance.storeMessage(new TextMessage(json.content,json.sender,json.chatPartnerID))
+		// TODO: MessageService.instance.storeMessage(new TextMessage(json.content,json.sender,json.chatPartnerID))
 	}
 			
 	String messageToString(def message) {

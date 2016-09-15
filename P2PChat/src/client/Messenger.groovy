@@ -1,6 +1,5 @@
 package client
 
-
 import client.services.MessageService
 import client.services.UserService
 import client.services.ValidationService

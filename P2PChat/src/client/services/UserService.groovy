@@ -3,7 +3,6 @@ package client.services
 import groovyx.net.http.RESTClient
 import client.InetAddr
 
-
 @Singleton
 class UserService {
 	

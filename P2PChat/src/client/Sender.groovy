@@ -11,9 +11,6 @@ class Sender {
 	def messageService = MessageService.instance
 
 	public void sendMessage(String msg, String chatPartnerIp, String chatPartnerName) {
-//		def ip = getChatPartnerIP(msg.chatPartnerID)
-//		def ip = InetAddr.ChatPartnerInetAddr
-//		println "ip: $ip"
 //		try {
 			Message messageObject = new TextMessage(msg, this.name, chatPartnerName)
 			def msgJson = messageService.convertToJSON(messageObject)
@@ -26,7 +23,7 @@ class Sender {
 //			println ">> Ooops...this message got lost in space...\n${chatPartnerName.toUpperCase()} might have lost connection. <<\n"
 //		}
 		
-//		MessageService.instance.storeMessage(messageObject)
+			// TODO: MessageService.instance.storeMessage(messageObject)
 		}
 
 }
