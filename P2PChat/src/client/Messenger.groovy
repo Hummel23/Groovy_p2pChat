@@ -98,9 +98,9 @@ class Messenger {
 		def userList = ""
 		def users = onlineUsers.findAll {it -> it.name != sender.instance.name}
 		users.each { it ->
-				userList += "	> " + it.name + "\n\n"
+				userList += "	> " + it.name + "\n"
 				if(it != users.last()){
-					userList += "      ---------------------"
+					userList += "\n"
 				}
 		}
 		return userList
@@ -115,12 +115,12 @@ class Messenger {
 		else if(val == 'list'){
 			def list = UserService.instance.getOnlineUsers()
 			if(list.size() > 1) {		//doesn't show the user itself
-			println"╔══════════════════════════════════════════════════════╗"
-			println" 		These users are online:                	       "
-			println"╚══════════════════════════════════════════════════════╝"
+			println"╔══════════════════════════════════════════════╗"
+			println" 		 These users are online:                	       "
+			println"╚══════════════════════════════════════════════╝"
 			println showUserList(list)
-			println " ==============================================================="
-			println	"To chat, type in 'chat' or the name of an online user."
+			println " ====================================================="
+			println	" To chat, type in 'chat' or the name of an online user."
 			println ""
 			} else {
 				println "Sorry - nobody online - ಥ_ಥ"
