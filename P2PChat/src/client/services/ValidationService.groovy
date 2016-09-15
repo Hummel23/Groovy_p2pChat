@@ -5,13 +5,26 @@ import client.services.UserService
 @Singleton
 class ValidationService {
 	
-	// returns true if the command entered is either exit, list, chat or help
+	def keywords = ['exit', 'list', 'chat', 'help']
+	
+	/**
+	 * returns true if the command entered is either exit, list, chat or help or an online-user-name
+	 * @param val
+	 * @return
+	 */
 	boolean isValidEntry(String val){
-		(val == 'exit' ||
-			val == 'list' || 
-			val == 'chat' || 
-			val == 'help' ||
-			(UserService.instance.getInetAddrChatPartner(val).size() > 0) ? true : false)
+		def keys = keywords.findAll{it -> it == val}
+		return (!keys.isEmpty() || (UserService.instance.getInetAddrChatPartner(val).size() > 0))
+	}
+	
+	/**
+	 * returns true if the entered login name is neither a keyword, nor empty
+	 * @param name
+	 * @return
+	 */
+	boolean validateLoginName(String name) {
+		def keys = keywords.findAll{it -> it == name}
+		return (keys.isEmpty() && name.size() > 0)
 	}
 
 }
