@@ -73,7 +73,6 @@ Please choose a command or wait for messages and be happy:
 
 		def chatPartnerID = br.readLine().trim().toLowerCase()
 		def onlineUsers = getOnlineUsers()
-	
 		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
 		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
 		
@@ -99,8 +98,8 @@ Please choose a command or wait for messages and be happy:
 	
 	public String showUserList(def onlineUsers) {
 		def list = ""
-		for(user in onlineUsers) {
-			if(user.name != sender.instance.name){
+		onlineUsers.each { it ->
+			if(it.name != sender.instance.name){
 				list += "      " + user.name + "\n      -----------------\n"
 			}
 		}
@@ -108,8 +107,8 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
-		for(user in onlineUsers){
-			if(chatPartnerID == user.name.toLowerCase()){
+		onlineUsers.each { it ->
+			if(chatPartnerID == it.name.toLowerCase()){
 				return true
 			}
 		}
@@ -117,9 +116,9 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
-		for(user in onlineUsers){
-			if(chatPartnerID == user.name.toLowerCase()) {
-				return user.ip
+		onlineUsers.each { it -> 
+			if(chatPartnerID == it.name.toLowerCase()) {
+				return it.ip
 			}
 		}
 	}
@@ -134,7 +133,7 @@ Please choose a command or wait for messages and be happy:
 		}
 		else if(val == 'list'){
 			def list = getOnlineUsers()
-			if(list.size() > 0) {
+			if(list.size() > 1) {
 				println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
 				println"      Want to chat? These users are online:"
 				println"      ====================================="
