@@ -46,23 +46,18 @@ class Messenger {
 			if(login == ""){
 				System.err.println "This name is already in use. Please choose another name."
 				this.name = br.readLine().toLowerCase()
-
+				println ""
 			}else{
-//				println "name to be saved:"+ name
 				this.name = name
 				this.receiver.name = name
 				this.sender.name = name
 				receiver.inetAddr = login
-//				println login
 				userAdded = true
 			}
 		}
 		this.receiver.startClientServer()
-		//		println "Got users inetAddr: ${addUserToServer()}"	//TEST
 		isOnline = true
 		println commands
-		//TODO wait for command or incoming message
-
 	}
 
 	public void chat(String val){
@@ -72,6 +67,7 @@ class Messenger {
 		if(val == 'chat') {
 			println "Enter name of chat partner: "
 			chatPartnerName = br.readLine().trim().toLowerCase()
+			println ""
 		}else{
 			chatPartnerName = val
 		}
@@ -83,37 +79,21 @@ class Messenger {
 				return
 			}
 		println "Enter message to \"${chatPartnerName.toUpperCase()}\": "
+		print "${this.name.toUpperCase()} : "
 		def msg = br.readLine()
+		println ""
 		sender.instance.sendMessage(msg, chatPartnerInetAddr, chatPartnerName)
 		println "Please type a new command before continuing."
 	}
-
-
-//	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
-//		for(user in onlineUsers) {
-//				if(chatPartnerID == user.name.toLowerCase()){
-//				return true
-//			}
-//		}
-//		return false
-//	}
-//
-//	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
-//		for(user in onlineUsers) {
-//			if(chatPartnerID == user.name.toLowerCase()) {
-//				return user.ip
-//			}
-//		}
-//	}
 	
 	public String showUserList(def onlineUsers) {
 		def userList = ""
 		def users = onlineUsers.findAll {it -> it.name != sender.instance.name}
 		users.each { it ->
-				userList += "	> " + it.name + "\n"
-				if(it != users.last()){
-					userList += "\n      -----------------\n"
-				}
+				userList += "	> " + it.name + "\n\n"
+//				if(it != users.last()){
+//					userList += "      -----------------"
+//				}
 		}
 		return userList
 	}
@@ -124,14 +104,11 @@ class Messenger {
 		if(val == 'exit') {
 			logout()
 		}
-		else if(val == 'chat'){
-			chat(val)
-		}
 		else if(val == 'list'){
 			def list = UserService.instance.getOnlineUsers()
 			if(list.size() > 1) {
 			println"╔══════════════════════════════════════════════════════╗"
-			println"║		These users are online:                ║"
+			println"║		These users are online:                	      ║"
 			println"╚══════════════════════════════════════════════════════╝"
 			println showUserList(list)
 			} else {
@@ -141,6 +118,9 @@ class Messenger {
 		}
 		else if(val == 'help'){
 			println commands
+		}
+		else {
+			chat(val)	//is chat or valid online-user name 
 		}
 	}
 

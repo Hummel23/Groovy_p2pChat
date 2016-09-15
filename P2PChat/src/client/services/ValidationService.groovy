@@ -1,5 +1,6 @@
 package client.services
-import client.Messenger
+
+import client.services.UserService
 
 @Singleton
 class ValidationService {
@@ -10,7 +11,7 @@ class ValidationService {
 			val == 'list' || 
 			val == 'chat' || 
 			val == 'help' ||
-			Messenger.instance.validateChatPartner(val, UserService.instance.getOnlineUsers())) ? true : false
+			(UserService.instance.getInetAddrChatPartner(val).size() > 0) ? true : false)
 	}
 
 }
