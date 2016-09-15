@@ -13,7 +13,7 @@ class Messenger {
 	Receiver receiver
 	boolean isWriting = false
 	boolean isOnline = false
-	
+
 	def messageService = MessageService.instance
 	def name
 	def commands = """
@@ -38,9 +38,9 @@ Please choose a command or wait for messages and be happy:
 	public void login(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		this.name = br.readLine().toLowerCase()
-		receiver = Receiver.instance	
-		sender = Sender.instance	
-		sender = Sender.instance		
+		receiver = Receiver.instance
+		sender = Sender.instance
+		sender = Sender.instance
 		boolean userAdded = false
 		while(!userAdded){
 			def login = UserService.instance.addUserToServer(this.name)
@@ -48,7 +48,7 @@ Please choose a command or wait for messages and be happy:
 			if(login == ""){
 				println "This name is already in use. Please choose another name."
 				this.name = br.readLine().toLowerCase()
-				
+
 			}else{
 				println "name to be saved:"+ name
 				this.name = name
@@ -64,7 +64,7 @@ Please choose a command or wait for messages and be happy:
 		isOnline = true
 		println commands
 		//TODO wait for command or incoming message
-		
+
 	}
 
 	public void chat(){
@@ -72,10 +72,10 @@ Please choose a command or wait for messages and be happy:
 		println "Enter name of chat partner: "
 
 		def chatPartnerID = br.readLine().trim().toLowerCase()
-		def onlineUsers = getOnlineUsers()
+		def onlineUsers = UserService.instance.getOnlineUsers()
 		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
 		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
-		
+
 		if(!isValidChatPartnerID){
 			println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
 			println "Please try again or type 'list' to search for another user."
@@ -88,12 +88,21 @@ Please choose a command or wait for messages and be happy:
 		println "Please type a new command before continuing."
 	}
 
+	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
+		onlineUsers.each { it ->
+			if(chatPartnerID == it.name.toLowerCase()){
+				return true
+			}
+		}
+		return false
+	}
 
-	
-	public def getOnlineUsers() {
-		RESTClient client = new RESTClient(InetAddr.UserServerInetAddr)
-		def response = client.get(path: '/list')
-		return response.data
+	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
+		onlineUsers.each { it ->
+			if(chatPartnerID == it.name.toLowerCase()) {
+				return it.ip
+			}
+		}
 	}
 	
 	public String showUserList(def onlineUsers) {
@@ -106,23 +115,6 @@ Please choose a command or wait for messages and be happy:
 		return list
 	}
 
-	public boolean validateChatPartner(String chatPartnerID, def onlineUsers){
-		onlineUsers.each { it ->
-			if(chatPartnerID == it.name.toLowerCase()){
-				return true
-			}
-		}
-		return false
-	}
-
-	public def findChatPartnerInetAddr(String chatPartnerID, def onlineUsers) {
-		onlineUsers.each { it -> 
-			if(chatPartnerID == it.name.toLowerCase()) {
-				return it.ip
-			}
-		}
-	}
-
 	void executeUserEntry(String val) {
 
 		if(val == 'exit') {
@@ -132,11 +124,11 @@ Please choose a command or wait for messages and be happy:
 			chat()
 		}
 		else if(val == 'list'){
-			def list = getOnlineUsers()
+			def list = UserService.instance.getOnlineUsers()
 			if(list.size() > 1) {
 				println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
-				println"      Want to chat? These users are online:"
-				println"      ====================================="
+				println "      Want to chat? These users are online:"
+				println "      ====================================="
 				println showUserList(list)
 				println "++++++++++++++++++++++++++++++++++++++++++++++++"
 			} else {
@@ -151,7 +143,7 @@ Please choose a command or wait for messages and be happy:
 	public void logout(){
 		UserService.instance.removeUserFromServer()
 		this.receiver.stopClientServer()
-		isOnline=false
+		isOnline = false
 		println "Thanks for using MESSAS. \nWe are looking forward to seeing you again soon!"
 	}
 

@@ -7,9 +7,6 @@ import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
 
-/**
- * 
- */
 @Path('/')
 class Root {
 	
@@ -32,11 +29,11 @@ class Chat {
 		
 	String messageToString(def message) {
 		return """
-		============================
-		${message.sender.toUpperCase()}:
-		----------------------------
-		${message.content}
-		============================"""
+	============================
+	${message.sender.toUpperCase()}:
+	----------------------------
+	${message.content}
+	============================"""
 	}
 }
 
