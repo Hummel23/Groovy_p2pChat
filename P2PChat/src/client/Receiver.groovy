@@ -29,11 +29,12 @@ class Receiver {
     -------------------------
     ${content}
 ╚=======================================================
+	"""
 	}
 
 	def startClientServer() {
 		this.server = GrizzlyHttpServerFactory.createHttpServer(
-			"http://${this.inetAddr}:8080".toURI(), new ResourceConfig(Chat.class, Root.class))
+			"http://${this.inetAddr}:8080".toURI(), new ResourceConfig(Chat.class))
 		println "startet local server..."
 	}
 	
