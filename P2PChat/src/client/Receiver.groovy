@@ -14,12 +14,14 @@ class Receiver {
 	def name
 	def inetAddr 
 	HttpServer server
+	String lastSender
 
 
 	public void receiveMessage(def msg) {
 		def json = new JsonSlurper().parseText(msg)		
 		String sender = json['sender']
 		String content = json['content']
+		this.lastSender = sender
 		
 		println """
 	°°°°°°°°°°°°°°°°°°°°°°°°°

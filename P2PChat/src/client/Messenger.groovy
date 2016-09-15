@@ -29,10 +29,8 @@ class Messenger {
 Please choose a command or wait for messages and be happy: 
 		"""
 
-
 	public void greeting(){
-		println "Welcome to MESSAS! Please type your name if you want to log in."
-
+		println "Welcome to MESSAS!\nPlease type your name if you want to log in."
 	}
 
 	public void login(){
@@ -67,21 +65,28 @@ Please choose a command or wait for messages and be happy:
 
 	}
 
-	public void chat(){
-		def br = new BufferedReader(new InputStreamReader(System.in))
-		println "Enter name of chat partner: "
-
-		def chatPartnerID = br.readLine().trim().toLowerCase()
+	public void chat(String val){
+		
+		def br = new BufferedReader(new InputStreamReader(System.in)) 
 		def onlineUsers = UserService.instance.getOnlineUsers()
-		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
-		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
-
-		if(!isValidChatPartnerID){
-			println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
-			println "Please try again or type 'list' to search for another user."
-			return
+		def chatPartnerID
+		
+		if(val == 'chat') {
+			println "Enter name of chat partner: "
+			chatPartnerID = br.readLine().trim().toLowerCase()
+			def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
+			
+			if(!isValidChatPartnerID){
+				println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
+				println "Please try again or type 'list' to search for another user."
+				return
+			}
+			
 		}
-
+		else {
+			chatPartnerID = val
+		}
+		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
 		println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
 		def msg = br.readLine()
 		sender.instance.sendMessage(msg)
@@ -116,23 +121,24 @@ Please choose a command or wait for messages and be happy:
 	}
 
 	void executeUserEntry(String val) {
-
+		val = val.trim().toLowerCase()
+		
 		if(val == 'exit') {
 			logout()
 		}
-		else if(val == 'chat'){
-			chat()
+		else if(val == 'chat' || validateChatPartner(val, UserService.instance.getOnlineUsers())){
+			chat(val)
 		}
 		else if(val == 'list'){
 			def list = UserService.instance.getOnlineUsers()
 			if(list.size() > 1) {
-				println "++++++++++++++++++++++++++++++++++++++++++++++++\n"
-				println "      Want to chat? These users are online:"
-				println "      ====================================="
+				println "+++++++++++++++++++++++++++++++++++++++++++++\n"
+				println "    Want to chat? These users are online:"
+				println "    ====================================="
 				println showUserList(list)
-				println "      ====================================="
-				println "      Type 'chat' to start a conversation."
-				println "++++++++++++++++++++++++++++++++++++++++++++++++"
+				println "    ====================================="
+				println "    Type 'chat' or a name to start a conversation."
+				println "+++++++++++++++++++++++++++++++++++++++++++++"
 			} else {
 				println "Sorry - nobody online"
 			}
