@@ -43,10 +43,14 @@ class UserService {
 		return responseLogin.data
 	}
 	
-
 	public boolean removeUserFromServer(){
 		def responseLogout = client.get(path:'/logout')
 		return responseLogout.data
+	}
+	
+	public String getInetAddrChatPartner(def name){
+		def responseLogin = client.get(path:'/findInetAddr', query:['name':name])
+		return responseLogin.data
 	}
 
 }

@@ -10,14 +10,14 @@ class Sender {
 	RESTClient client
 	def messageService = MessageService.instance
 
-	public void sendMessage(String msg) {
+	public void sendMessage(String msg, String chatPartnerIp, String chatPartnerName) {
 //		def ip = getChatPartnerIP(msg.chatPartnerID)
-		def ip = InetAddr.ChatPartnerInetAddr
-		println "ip: $ip"
-		Message messageObject = new TextMessage(msg, this.name, "chatPartnerID")
+//		def ip = InetAddr.ChatPartnerInetAddr
+//		println "ip: $ip"
+		Message messageObject = new TextMessage(msg, this.name, chatPartnerName)
 		def msgJson = messageService.convertToJSON(messageObject)	
 		println "JSON: "+msgJson
-		client = new RESTClient("http://${ip}:8080/")
+		client = new RESTClient("http://${chatPartnerIp}:8080/")
 		def response = client.get(path: "/${msgJson}")
 		println "resp: "+ response.data
 		println "status: "+ response.status

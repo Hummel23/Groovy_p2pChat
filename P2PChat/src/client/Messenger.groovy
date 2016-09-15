@@ -1,9 +1,9 @@
 package client
 
 
-import client.services.UserService
 import groovyx.net.http.RESTClient
 import client.services.MessageService
+import client.services.UserService
 
 @Singleton
 class Messenger {
@@ -12,8 +12,9 @@ class Messenger {
 	Receiver receiver
 	boolean isWriting = false
 	boolean isOnline = false
-	
+
 	def messageService = MessageService.instance
+	def userService = UserService.instance
 	def name
 	def commands = """
 **********************************************
@@ -37,9 +38,9 @@ Please choose a command or wait for messages and be happy:
 	public void login(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
 		this.name = br.readLine().toLowerCase()
-		receiver = Receiver.instance	
-		sender = Sender.instance	
-		sender = Sender.instance		
+		receiver = Receiver.instance
+		sender = Sender.instance
+		sender = Sender.instance
 		boolean userAdded = false
 		while(!userAdded){
 			def login = UserService.instance.addUserToServer(this.name)
@@ -63,30 +64,28 @@ Please choose a command or wait for messages and be happy:
 		isOnline = true
 		println commands
 		//TODO wait for command or incoming message
-		
+
 	}
 
 	public void chat(){
 		def br = new BufferedReader(new InputStreamReader(System.in))
+		boolean chatPartnerChosen = false
 		println "Enter name of chat partner: "
 
-		def chatPartnerID = br.readLine().trim().toLowerCase()
-		def onlineUsers = getOnlineUsers()
-	
-		def isValidChatPartnerID = validateChatPartner(chatPartnerID, onlineUsers)
-		def chatPartnerInetAddr = findChatPartnerInetAddr(chatPartnerID, onlineUsers)
-		
-		if(!isValidChatPartnerID){
-			println "Sorry - there is no user online with the name \"${chatPartnerID.toUpperCase()}\"."
+		def chatPartnerName = br.readLine().trim().toLowerCase()
+		def chatPartnerInetAddr = UserService.instance.getInetAddrChatPartner(chatPartnerName)
+		println chatPartnerInetAddr
+		if (chatPartnerInetAddr==""){
+			println "Sorry - there is no user online with the name \"${chatPartnerName.toUpperCase()}\"."
 			println "Please try again or type 'list' to search for another user."
 			return
 		}
+	println "Enter message to \"${chatPartnerName.toUpperCase()}\": "
+	def msg = br.readLine()
+	sender.instance.sendMessage(msg, chatPartnerInetAddr, chatPartnerName)
+	println "Please type a new command before continuing."
+}
 
-		println "Enter message to \"${chatPartnerID.toUpperCase()}\": "
-		def msg = br.readLine()
-		sender.instance.sendMessage(msg)
-		println "Please type a new command before continuing."
-	}
 
 
 	
