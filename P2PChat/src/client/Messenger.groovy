@@ -100,7 +100,7 @@ Please choose a command or wait for messages and be happy:
 		def list = ""
 		onlineUsers.each { it ->
 			if(it.name != sender.instance.name){
-				list += "      " + user.name + "\n      -----------------\n"
+				list += "      " + it.name + "\n      -----------------\n"
 			}
 		}
 		return list
