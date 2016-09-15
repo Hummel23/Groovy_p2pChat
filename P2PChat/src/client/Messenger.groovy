@@ -1,7 +1,6 @@
 package client
 
 
-import client.services.TransportService
 import client.services.UserService
 import groovyx.net.http.RESTClient
 import client.services.MessageService
@@ -50,12 +49,12 @@ Please choose a command or wait for messages and be happy:
 				this.name = br.readLine().toLowerCase()
 				
 			}else{
-				println "name to be saved:"+ name
+//				println "name to be saved:"+ name
 				this.name = name
 				this.receiver.name = name
 				this.sender.name = name
 				receiver.inetAddr = login
-				println login
+//				println login
 				userAdded = true
 			}
 		}
