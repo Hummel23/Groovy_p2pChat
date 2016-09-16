@@ -134,7 +134,7 @@ class Messenger {
 	}
 
 	public void logout(){
-		if(!isOnline) {
+		if(isOnline) {
 			UserService.instance.removeUserFromServer()
 		}
 		this.receiver.stopClientServer()
